@@ -1,25 +1,37 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import ArticleCard from "@/components/ArticleCard";
 
-const articles = [
-  {
-    title: "Smart Tourism in Baguio",
-    content: "Baguio City is integrating real-time APIs to enhance tourist experiences...",
-    tags: ["tourism", "tech", "Baguio"]
-  },
-  {
-    title: "Local Cuisine Spotlight",
-    content: "From strawberry taho to Cordilleran etag, Baguio’s food scene is rich and diverse...",
-    tags: ["food", "culture"]
-  }
-];
-
 export default function ArticlesPage() {
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/articles/articles.json")
+      .then((res) => res.json())
+      .then((data) => {
+        setArticles(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Failed to load articles:", err);
+        setLoading(false);
+      });
+  }, []);
+
   return (
     <main style={{ maxWidth: 800, margin: "40px auto", fontFamily: "sans-serif" }}>
       <h1>📰 Articles</h1>
-      {articles.map((article, index) => (
-        <ArticleCard key={index} article={article} />
-      ))}
+      {loading ? (
+        <p>Loading articles...</p>
+      ) : articles.length === 0 ? (
+        <p>No articles found.</p>
+      ) : (
+        articles.map((article, index) => (
+          <ArticleCard key={index} article={article} />
+        ))
+      )}
     </main>
   );
 }
