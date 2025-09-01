@@ -38,18 +38,15 @@ export default function ArticleCard({ article }) {
   }
 
   return (
-    <div style={{ border: "1px solid #ccc", padding: "20px", marginBottom: "20px", borderRadius: "8px" }}>
+    <div style={{
+      border: "1px solid #ccc",
+      padding: "20px",
+      marginBottom: "20px",
+      borderRadius: "8px",
+      backgroundColor: "#fff"
+    }}>
       <h2>{article.title}</h2>
       <p>{article.content}</p>
-      <button onClick={handleSummarize} disabled={loading} style={{ marginTop: "10px" }}>
-        {loading ? "Summarizing..." : "Summarize"}
-      </button>
-      {summary && (
-        <div style={{ marginTop: "15px", background: "#f9f9f9", padding: "10px", borderRadius: "6px" }}>
-          <strong>Summary:</strong>
-          <p>{summary}</p>
-        </div>
-      )}
-    </div>
-  );
-}
+      <button
+        onClick={handleSummarize}
+       
