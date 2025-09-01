@@ -4,12 +4,19 @@ import { useState, useEffect } from 'react';
 export default function ArticlesPage() {
   const [articles, setArticles] = useState([]);
   const [query, setQuery] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch('/articles.json')
       .then(res => res.json())
-      .then(data => setArticles(data))
-      .catch(err => console.error('Failed to load articles:', err));
+      .then(data => {
+        setArticles(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Failed to load articles:', err);
+        setLoading(false);
+      });
   }, []);
 
   const normalizedQuery = query.trim().toLowerCase();
@@ -32,7 +39,9 @@ export default function ArticlesPage() {
         className="w-full border border-gray-300 rounded px-4 py-2 mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
 
-      {filteredArticles.length === 0 ? (
+      {loading ? (
+        <p className="text-gray-500">Loading articles...</p>
+      ) : filteredArticles.length === 0 ? (
         <p className="text-gray-500">No articles match your search.</p>
       ) : (
         <ul className="space-y-6">
