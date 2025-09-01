@@ -9,6 +9,7 @@ export async function POST(req) {
       return NextResponse.json({ error: "Missing GROQ_API_KEY" }, { status: 500 });
     }
 
+    // Full, unsimplified prompt
     const prompt = `
 You are a helpful assistant that summarizes articles about Baguio City.
 Summarize the following article in 3–5 sentences based on its metadata:
@@ -27,7 +28,7 @@ Be concise, informative, and relevant to local culture, history, or tourism.
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "mixtral-8x7b-32768",
+        model: "mixtral-8x7b-32768", // You can switch to llama3-70b-8192 if needed
         messages: [
           { role: "system", content: "You summarize articles based on metadata." },
           { role: "user", content: prompt }
@@ -37,6 +38,9 @@ Be concise, informative, and relevant to local culture, history, or tourism.
     });
 
     const data = await response.json();
+
+    // Log full response for debugging
+    console.log("Groq raw response:", JSON.stringify(data, null, 2));
 
     const aiSummary = data?.choices?.[0]?.message?.content?.trim();
 
