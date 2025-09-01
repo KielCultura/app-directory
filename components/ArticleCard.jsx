@@ -49,4 +49,31 @@ export default function ArticleCard({ article }) {
       <p>{article.content}</p>
       <button
         onClick={handleSummarize}
-       
+        disabled={loading}
+        style={{
+          marginTop: "10px",
+          padding: "8px 16px",
+          backgroundColor: "#183ba8",
+          color: "#fff",
+          border: "none",
+          borderRadius: "4px",
+          cursor: loading ? "not-allowed" : "pointer"
+        }}
+      >
+        {loading ? "Summarizing..." : "Summarize"}
+      </button>
+      {summary && (
+        <div style={{
+          marginTop: "15px",
+          background: "#f9f9f9",
+          padding: "10px",
+          borderRadius: "6px",
+          fontStyle: "italic"
+        }}>
+          <strong>Summary:</strong>
+          <p>{summary}</p>
+        </div>
+      )}
+    </div>
+  );
+}
