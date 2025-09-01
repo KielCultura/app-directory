@@ -1,14 +1,23 @@
 'use client';
-import { useState } from 'react';
-import articles from '../../articles.json'; // Adjusted path
+import { useState, useEffect } from 'react';
 
 export default function ArticlesPage() {
+  const [articles, setArticles] = useState([]);
   const [query, setQuery] = useState('');
 
+  useEffect(() => {
+    fetch('/articles.json')
+      .then(res => res.json())
+      .then(data => setArticles(data))
+      .catch(err => console.error('Failed to load articles:', err));
+  }, []);
+
+  const normalizedQuery = query.trim().toLowerCase();
+
   const filteredArticles = articles.filter(article =>
-    article.title.toLowerCase().includes(query.toLowerCase()) ||
-    article.summary.toLowerCase().includes(query.toLowerCase()) ||
-    article.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
+    article.title.toLowerCase().includes(normalizedQuery) ||
+    article.summary.toLowerCase().includes(normalizedQuery) ||
+    article.tags.some(tag => tag.toLowerCase().includes(normalizedQuery))
   );
 
   return (
