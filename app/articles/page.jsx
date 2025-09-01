@@ -1,68 +1,39 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-// Strip HTML tags, collapse whitespace
+// Minimal text extraction that keeps your current JSON shape
 function toPlainText(input) {
   if (typeof input !== 'string') return '';
   const noHtml = input.replace(/<[^>]+>/g, ' ');
   return noHtml.replace(/\s+/g, ' ').trim();
 }
 
-// Safely extract text from many shapes (string | array | object | nested)
 function extractText(val) {
   if (!val) return '';
-
-  // String
   if (typeof val === 'string') return toPlainText(val);
-
-  // Array of strings/objects
   if (Array.isArray(val)) {
-    return val.map(item => {
-      if (typeof item === 'string') return toPlainText(item);
-      if (item && typeof item === 'object') {
-        // common fields inside array items
-        return extractText(item.content || item.text || item.body || item.description || item.value || item.html || item.markdown);
-      }
-      return '';
-    }).filter(Boolean).join(' ');
+    return val.map(extractText).filter(Boolean).join(' ');
   }
-
-  // Object with common text fields
   if (typeof val === 'object') {
-    // prioritized fields (add more if needed)
-    const fields = ['content', 'body', 'text', 'article', 'description', 'excerpt', 'html', 'markdown', 'rendered', 'value'];
-    for (const f of fields) {
-      if (f in val) {
-        const t = extractText(val[f]);
-        if (t) return t;
-      }
+    // Try common fields first
+    const fields = ['content','body','text','article','description','excerpt','html','markdown','rendered','value'];
+    for (const f of fields) if (f in val) {
+      const t = extractText(val[f]);
+      if (t) return t;
     }
-    // fallback: concatenate all string-like values
-    const joined = Object.values(val)
-      .map(v => extractText(v))
-      .filter(Boolean)
-      .join(' ');
-    return joined;
+    // Fallback: concatenate values
+    return Object.values(val).map(extractText).filter(Boolean).join(' ');
   }
-
   return '';
 }
 
 function extractTitle(obj) {
   if (!obj || typeof obj !== 'object') return 'Untitled';
-  const candidates = ['title', 'name', 'headline', 'label'];
+  const candidates = ['title','name','headline','label'];
   for (const k of candidates) {
     const v = obj[k];
     if (typeof v === 'string' && v.trim()) return v.trim();
     if (v && typeof v === 'object') {
-      // nested title fields like { rendered: "..." }
-      const nested = extractText(v);
-      if (nested) return nested;
-    }
-  }
-  // fallback: first string field
-  for (const [k, v] of Object.entries(obj)) {
-    if (/title|name|headline/i.test(k)) {
       const t = extractText(v);
       if (t) return t;
     }
@@ -98,6 +69,7 @@ export default function Page() {
   const [error, setError] = useState('');
   const [summary, setSummary] = useState('');
   const [selectedArticle, setSelectedArticle] = useState(null);
+  const [sentences, setSentences] = useState(3); // tweak summary length
 
   useEffect(() => {
     let cancelled = false;
@@ -114,17 +86,10 @@ export default function Page() {
 
         const normalized = data.map(normalizeArticle);
         if (!cancelled) setArticles(normalized);
-
-        // Debug: log first item’s keys and extracted fields
-        if (normalized[0]) {
-          console.log('First raw item keys:', Object.keys(data[0]));
-          console.log('Extracted title:', normalized[0].title);
-          console.log('Extracted content preview:', normalized[0].content?.slice(0, 80));
-        }
       } catch (e) {
         console.error('Failed to load articles:', e);
         if (!cancelled) {
-          setError('Failed to load articles. Validate public/articles.json and try again.');
+          setError('Failed to load articles. Check public/articles.json and try again.');
           setArticles([]);
         }
       } finally {
@@ -140,16 +105,36 @@ export default function Page() {
     setSelectedArticle(article);
     setSummary('Summarizing...');
     const text = typeof article?.content === 'string' ? article.content : '';
-
-    const mock = text
-      ? (text.length > 240 ? text.slice(0, 240) + '…' : text)
-      : 'No content to summarize.';
-    setSummary(mock);
+    try {
+      const res = await fetch('/api/summarize', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, sentences }),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      setSummary(typeof data.summary === 'string' ? data.summary : 'No summary returned.');
+    } catch (e) {
+      console.error(e);
+      setSummary('Failed to generate summary.');
+    }
   };
 
   return (
     <div className="p-4">
       <h1 className="text-xl font-bold mb-4">Articles</h1>
+
+      <div className="mb-3 flex items-center gap-2">
+        <label className="text-sm text-gray-700">Sentences:</label>
+        <input
+          type="number"
+          min={1}
+          max={6}
+          value={sentences}
+          onChange={e => setSentences(Number(e.target.value))}
+          className="w-20 border rounded px-2 py-1"
+        />
+      </div>
 
       {loading && <p>Loading articles...</p>}
       {!loading && error && <p className="text-red-600">{error}</p>}
