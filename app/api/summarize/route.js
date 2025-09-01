@@ -6,10 +6,12 @@ export async function POST(req) {
     const apiKey = process.env.GROQ_API_KEY;
 
     if (!apiKey) {
-      return NextResponse.json({ error: "Missing GROQ_API_KEY" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Missing GROQ_API_KEY", reason: "Environment variable not set" },
+        { status: 500 }
+      );
     }
 
-    // Full, unsimplified prompt
     const prompt = `
 You are a helpful assistant that summarizes articles about Baguio City.
 Summarize the following article in 3–5 sentences based on its metadata:
@@ -39,19 +41,41 @@ Be concise, informative, and relevant to local culture, history, or tourism.
 
     const data = await response.json();
 
-    // Log full response for debugging
-    console.log("Groq raw response:", JSON.stringify(data, null, 2));
+    console.log("🔍 Groq raw response:", JSON.stringify(data, null, 2));
 
-    const aiSummary = data?.choices?.[0]?.message?.content?.trim();
+    // Diagnostic checks
+    if (!data?.choices) {
+      return NextResponse.json({
+        summary: null,
+        reason: "Groq response missing 'choices' array",
+        raw: data
+      });
+    }
+
+    if (!data.choices[0]?.message) {
+      return NextResponse.json({
+        summary: null,
+        reason: "Groq response missing 'message' object in choices[0]",
+        raw: data
+      });
+    }
+
+    const aiSummary = data.choices[0].message.content?.trim();
 
     if (!aiSummary) {
-      console.warn("Groq returned no usable content:", JSON.stringify(data, null, 2));
-      return NextResponse.json({ summary: "No summary returned by Groq." }, { status: 200 });
+      return NextResponse.json({
+        summary: null,
+        reason: "Groq returned empty or undefined 'content'",
+        raw: data
+      });
     }
 
     return NextResponse.json({ summary: aiSummary });
   } catch (error) {
-    console.error("Groq summarization error:", error);
-    return NextResponse.json({ error: "Failed to summarize article." }, { status: 500 });
+    console.error("❌ Groq summarization error:", error);
+    return NextResponse.json({
+      error: "Failed to summarize article.",
+      reason: error.message || "Unknown error"
+    }, { status: 500 });
   }
 }
