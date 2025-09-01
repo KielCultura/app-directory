@@ -6,19 +6,18 @@ export async function POST(req) {
     const apiKey = process.env.GROQ_API_KEY;
 
     if (!apiKey) {
-      console.error("Missing GROQ_API_KEY");
       return NextResponse.json({ error: "Missing GROQ_API_KEY" }, { status: 500 });
     }
 
     const prompt = `
-You are a helpful assistant that summarizes articles in 3–5 sentences.
-Summarize the following article based on its metadata only:
+You are a helpful assistant that summarizes articles about Baguio City.
+Summarize the following article in 3–5 sentences based on its metadata:
 
 Title: ${title}
 Summary: ${inputSummary}
 Tags: ${tags.join(", ")}
 
-Be concise, informative, and relevant to Baguio City.
+Be concise, informative, and relevant to local culture, history, or tourism.
 `;
 
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
@@ -28,7 +27,7 @@ Be concise, informative, and relevant to Baguio City.
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "llama3-8b-8192",
+        model: "mixtral-8x7b-32768",
         messages: [
           { role: "system", content: "You summarize articles based on metadata." },
           { role: "user", content: prompt }
@@ -37,10 +36,12 @@ Be concise, informative, and relevant to Baguio City.
       })
     });
 
-    const groqData = await response.json();
-    const aiSummary = groqData.choices?.[0]?.message?.content?.trim();
+    const data = await response.json();
+
+    const aiSummary = data?.choices?.[0]?.message?.content?.trim();
 
     if (!aiSummary) {
+      console.warn("Groq returned no usable content:", JSON.stringify(data, null, 2));
       return NextResponse.json({ summary: "No summary returned by Groq." }, { status: 200 });
     }
 
