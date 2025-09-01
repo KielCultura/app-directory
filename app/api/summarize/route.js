@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    const { title, summary, tags = [] } = await req.json();
+    const { title, summary: inputSummary, tags = [] } = await req.json();
     const apiKey = process.env.GROQ_API_KEY;
 
     if (!apiKey) {
@@ -15,7 +15,7 @@ You are a helpful assistant that summarizes articles in 3–5 sentences.
 Summarize the following article based on its metadata only:
 
 Title: ${title}
-Summary: ${summary}
+Summary: ${inputSummary}
 Tags: ${tags.join(", ")}
 
 Be concise, informative, and relevant to Baguio City.
@@ -37,14 +37,14 @@ Be concise, informative, and relevant to Baguio City.
       })
     });
 
-    const data = await response.json();
-    const summary = data.choices?.[0]?.message?.content?.trim();
+    const groqData = await response.json();
+    const aiSummary = groqData.choices?.[0]?.message?.content?.trim();
 
-    if (!summary) {
+    if (!aiSummary) {
       return NextResponse.json({ summary: "No summary returned by Groq." }, { status: 200 });
     }
 
-    return NextResponse.json({ summary });
+    return NextResponse.json({ summary: aiSummary });
   } catch (error) {
     console.error("Groq summarization error:", error);
     return NextResponse.json({ error: "Failed to summarize article." }, { status: 500 });
