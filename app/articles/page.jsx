@@ -1,23 +1,93 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-// Try multiple likely keys without forcing a schema change.
-function pick(obj, keys) {
-  for (const k of keys) {
-    if (obj && typeof obj[k] === 'string' && obj[k].trim().length) return obj[k];
+// Strip HTML tags, collapse whitespace
+function toPlainText(input) {
+  if (typeof input !== 'string') return '';
+  const noHtml = input.replace(/<[^>]+>/g, ' ');
+  return noHtml.replace(/\s+/g, ' ').trim();
+}
+
+// Safely extract text from many shapes (string | array | object | nested)
+function extractText(val) {
+  if (!val) return '';
+
+  // String
+  if (typeof val === 'string') return toPlainText(val);
+
+  // Array of strings/objects
+  if (Array.isArray(val)) {
+    return val.map(item => {
+      if (typeof item === 'string') return toPlainText(item);
+      if (item && typeof item === 'object') {
+        // common fields inside array items
+        return extractText(item.content || item.text || item.body || item.description || item.value || item.html || item.markdown);
+      }
+      return '';
+    }).filter(Boolean).join(' ');
   }
+
+  // Object with common text fields
+  if (typeof val === 'object') {
+    // prioritized fields (add more if needed)
+    const fields = ['content', 'body', 'text', 'article', 'description', 'excerpt', 'html', 'markdown', 'rendered', 'value'];
+    for (const f of fields) {
+      if (f in val) {
+        const t = extractText(val[f]);
+        if (t) return t;
+      }
+    }
+    // fallback: concatenate all string-like values
+    const joined = Object.values(val)
+      .map(v => extractText(v))
+      .filter(Boolean)
+      .join(' ');
+    return joined;
+  }
+
   return '';
 }
 
+function extractTitle(obj) {
+  if (!obj || typeof obj !== 'object') return 'Untitled';
+  const candidates = ['title', 'name', 'headline', 'label'];
+  for (const k of candidates) {
+    const v = obj[k];
+    if (typeof v === 'string' && v.trim()) return v.trim();
+    if (v && typeof v === 'object') {
+      // nested title fields like { rendered: "..." }
+      const nested = extractText(v);
+      if (nested) return nested;
+    }
+  }
+  // fallback: first string field
+  for (const [k, v] of Object.entries(obj)) {
+    if (/title|name|headline/i.test(k)) {
+      const t = extractText(v);
+      if (t) return t;
+    }
+  }
+  return 'Untitled';
+}
+
 function normalizeArticle(raw) {
-  // Title candidates
-  const title = pick(raw, ['title', 'name', 'headline', 'label']) || 'Untitled';
+  const title = extractTitle(raw);
+  const content =
+    extractText(raw.content) ||
+    extractText(raw.body) ||
+    extractText(raw.text) ||
+    extractText(raw.article) ||
+    extractText(raw.description) ||
+    extractText(raw.excerpt) ||
+    extractText(raw);
 
-  // Content/body candidates
-  const content = pick(raw, ['content', 'body', 'text', 'article', 'description']);
-
-  // Optional: url/slug candidates (used if present)
-  const url = pick(raw, ['url', 'href', 'link', 'permalink', 'slug']);
+  const url =
+    (typeof raw.url === 'string' && raw.url) ||
+    (typeof raw.href === 'string' && raw.href) ||
+    (typeof raw.link === 'string' && raw.link) ||
+    (typeof raw.permalink === 'string' && raw.permalink) ||
+    (typeof raw.slug === 'string' && raw.slug) ||
+    '';
 
   return { ...raw, title, content, url };
 }
@@ -39,18 +109,22 @@ export default function Page() {
           headers: { Accept: 'application/json' },
         });
         if (!res.ok) throw new Error(`HTTP ${res.status} for /articles.json`);
-
         const data = await res.json();
-
         if (!Array.isArray(data)) throw new Error('articles.json must be an array');
 
         const normalized = data.map(normalizeArticle);
-
         if (!cancelled) setArticles(normalized);
+
+        // Debug: log first item’s keys and extracted fields
+        if (normalized[0]) {
+          console.log('First raw item keys:', Object.keys(data[0]));
+          console.log('Extracted title:', normalized[0].title);
+          console.log('Extracted content preview:', normalized[0].content?.slice(0, 80));
+        }
       } catch (e) {
         console.error('Failed to load articles:', e);
         if (!cancelled) {
-          setError('Failed to load articles. Validate /public/articles.json and try again.');
+          setError('Failed to load articles. Validate public/articles.json and try again.');
           setArticles([]);
         }
       } finally {
@@ -59,9 +133,7 @@ export default function Page() {
     }
 
     load();
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, []);
 
   const handleSummarize = async (article) => {
@@ -69,13 +141,10 @@ export default function Page() {
     setSummary('Summarizing...');
     const text = typeof article?.content === 'string' ? article.content : '';
 
-    // Mock summary without changing your data format
     const mock = text
-      ? (text.length > 200 ? text.slice(0, 200) + '…' : text)
+      ? (text.length > 240 ? text.slice(0, 240) + '…' : text)
       : 'No content to summarize.';
     setSummary(mock);
-
-    // To use a real API summarizer, replace with a POST to /api/summarize
   };
 
   return (
@@ -84,17 +153,13 @@ export default function Page() {
 
       {loading && <p>Loading articles...</p>}
       {!loading && error && <p className="text-red-600">{error}</p>}
-      {!loading && !error && articles.length === 0 && (
-        <p className="text-gray-600">No articles found.</p>
-      )}
+      {!loading && !error && articles.length === 0 && <p className="text-gray-600">No articles found.</p>}
 
       <ul className="space-y-4">
         {articles.map((article, idx) => {
-          const preview =
-            typeof article.content === 'string' && article.content.length
-              ? article.content.slice(0, 120) + '…'
-              : 'No preview available.';
-
+          const preview = article.content
+            ? article.content.slice(0, 140) + '…'
+            : 'No preview available.';
           return (
             <li key={idx} className="border p-4 rounded">
               <h2 className="text-lg font-semibold">{article.title || 'Untitled'}</h2>
@@ -107,12 +172,7 @@ export default function Page() {
                   Summarize
                 </button>
                 {article.url && (
-                  <a
-                    className="text-blue-700 underline"
-                    href={article.url}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <a className="text-blue-700 underline" href={article.url} target="_blank" rel="noreferrer">
                     Open
                   </a>
                 )}
@@ -124,9 +184,7 @@ export default function Page() {
 
       {summary && selectedArticle && (
         <div className="mt-6 p-4 bg-gray-100 rounded">
-          <h3 className="font-bold mb-2">
-            Summary of: {selectedArticle.title || 'Untitled'}
-          </h3>
+          <h3 className="font-bold mb-2">Summary of: {selectedArticle.title || 'Untitled'}</h3>
           <p>{summary}</p>
         </div>
       )}
