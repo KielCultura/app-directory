@@ -1,8 +1,25 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-function isArticle(x) {
-  return x && typeof x.title === 'string' && typeof x.content === 'string';
+// Try multiple likely keys without forcing a schema change.
+function pick(obj, keys) {
+  for (const k of keys) {
+    if (obj && typeof obj[k] === 'string' && obj[k].trim().length) return obj[k];
+  }
+  return '';
+}
+
+function normalizeArticle(raw) {
+  // Title candidates
+  const title = pick(raw, ['title', 'name', 'headline', 'label']) || 'Untitled';
+
+  // Content/body candidates
+  const content = pick(raw, ['content', 'body', 'text', 'article', 'description']);
+
+  // Optional: url/slug candidates (used if present)
+  const url = pick(raw, ['url', 'href', 'link', 'permalink', 'slug']);
+
+  return { ...raw, title, content, url };
 }
 
 export default function Page() {
@@ -21,30 +38,19 @@ export default function Page() {
           cache: 'no-store',
           headers: { Accept: 'application/json' },
         });
-
         if (!res.ok) throw new Error(`HTTP ${res.status} for /articles.json`);
 
-        const ct = res.headers.get('content-type') || '';
-        if (!ct.includes('application/json')) {
-          console.warn('Unexpected content-type:', ct);
-        }
-
         const data = await res.json();
-        if (!Array.isArray(data)) throw new Error('articles.json is not an array');
 
-        const cleaned = data
-          .filter(isArticle)
-          .map(a => ({
-            ...a,
-            title: typeof a.title === 'string' ? a.title : 'Untitled',
-            content: typeof a.content === 'string' ? a.content : '',
-          }));
+        if (!Array.isArray(data)) throw new Error('articles.json must be an array');
 
-        if (!cancelled) setArticles(cleaned);
+        const normalized = data.map(normalizeArticle);
+
+        if (!cancelled) setArticles(normalized);
       } catch (e) {
         console.error('Failed to load articles:', e);
         if (!cancelled) {
-          setError('Failed to load articles. Check public/articles.json format and try disabling extensions.');
+          setError('Failed to load articles. Validate /public/articles.json and try again.');
           setArticles([]);
         }
       } finally {
@@ -58,13 +64,18 @@ export default function Page() {
     };
   }, []);
 
-  const handleSummarize = (article) => {
+  const handleSummarize = async (article) => {
     setSelectedArticle(article);
     setSummary('Summarizing...');
     const text = typeof article?.content === 'string' ? article.content : '';
-    const mock = text.length ? text.slice(0, 160) + '…' : 'No content to summarize.';
+
+    // Mock summary without changing your data format
+    const mock = text
+      ? (text.length > 200 ? text.slice(0, 200) + '…' : text)
+      : 'No content to summarize.';
     setSummary(mock);
-    // To use your API route, replace the 3 lines above with a call to /api/summarize (see file below).
+
+    // To use a real API summarizer, replace with a POST to /api/summarize
   };
 
   return (
@@ -73,7 +84,9 @@ export default function Page() {
 
       {loading && <p>Loading articles...</p>}
       {!loading && error && <p className="text-red-600">{error}</p>}
-      {!loading && !error && articles.length === 0 && <p className="text-gray-600">No articles found.</p>}
+      {!loading && !error && articles.length === 0 && (
+        <p className="text-gray-600">No articles found.</p>
+      )}
 
       <ul className="space-y-4">
         {articles.map((article, idx) => {
@@ -86,12 +99,24 @@ export default function Page() {
             <li key={idx} className="border p-4 rounded">
               <h2 className="text-lg font-semibold">{article.title || 'Untitled'}</h2>
               <p className="text-sm text-gray-600">{preview}</p>
-              <button
-                onClick={() => handleSummarize(article)}
-                className="mt-2 px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
-              >
-                Summarize
-              </button>
+              <div className="mt-2 flex items-center gap-2">
+                <button
+                  onClick={() => handleSummarize(article)}
+                  className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+                >
+                  Summarize
+                </button>
+                {article.url && (
+                  <a
+                    className="text-blue-700 underline"
+                    href={article.url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Open
+                  </a>
+                )}
+              </div>
             </li>
           );
         })}
@@ -99,7 +124,9 @@ export default function Page() {
 
       {summary && selectedArticle && (
         <div className="mt-6 p-4 bg-gray-100 rounded">
-          <h3 className="font-bold mb-2">Summary of: {selectedArticle.title || 'Untitled'}</h3>
+          <h3 className="font-bold mb-2">
+            Summary of: {selectedArticle.title || 'Untitled'}
+          </h3>
           <p>{summary}</p>
         </div>
       )}
