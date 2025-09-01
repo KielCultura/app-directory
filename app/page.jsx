@@ -1,25 +1,13 @@
-import ArticleCard from "../components/ArticleCard";
-
-const articles = [
-  {
-    title: "Smart Tourism in Baguio",
-    content: "Baguio City is integrating real-time APIs to enhance tourist experiences...",
-    tags: ["tourism", "tech", "Baguio"]
-  },
-  {
-    title: "Local Cuisine Spotlight",
-    content: "From strawberry taho to Cordilleran etag, Baguio’s food scene is rich and diverse...",
-    tags: ["food", "culture"]
-  }
-];
-
-export default function ArticlesPage() {
+export default function Home() {
   return (
-    <main style={{ maxWidth: 800, margin: "40px auto", fontFamily: "sans-serif" }}>
-      <h1>📰 Articles</h1>
-      {articles.map((article, index) => (
-        <ArticleCard key={index} article={article} />
-      ))}
+    <main style={{ maxWidth: 600, margin: "40px auto", fontFamily: "sans-serif" }}>
+      <h1>Welcome to BagRovr</h1>
+      <p>
+        Discover curated articles about Baguio City.<br />
+        <a href="/articles" style={{ color: "#183ba8", fontWeight: "bold", fontSize: "1.2em" }}>
+          Browse Articles →
+        </a>
+      </p>
     </main>
   );
 }
