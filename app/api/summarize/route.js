@@ -18,6 +18,6 @@ export async function POST(req) {
   });
 
   const data = await response.json();
-  const summary = data.choices?.[0]?.message?.content || "No summary available.";
-  return Response.json({ summary });
+  // TEMP: Return the raw data for debugging
+  return Response.json({ debug: data, summary: data.choices?.[0]?.message?.content || "No summary available." });
 }
