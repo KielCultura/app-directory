@@ -1,4 +1,4 @@
-import ArticleCard from "app-directory/components/ArticleCard";
+import ArticleCard from "../../components/ArticleCard"; // if not using alias
 
 const articles = [
   {
