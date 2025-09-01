@@ -56,7 +56,12 @@ async function summarizeWithGroq(base64Pdf) {
   });
 
   const data = await res.json();
-  return data.choices?.[0]?.message?.content || '';
+
+  if (!data || !data.choices || !data.choices[0]?.message?.content) {
+    throw new Error('Groq did not return a valid summary');
+  }
+
+  return data.choices[0].message.content;
 }
 
 export async function POST(req) {
@@ -83,6 +88,6 @@ export async function POST(req) {
     return NextResponse.json({ source: pdfUrl, summary });
   } catch (e) {
     console.error('Summarize error:', e);
-    return NextResponse.json({ error: 'Failed to summarize' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to generate summary' }, { status: 500 });
   }
 }
