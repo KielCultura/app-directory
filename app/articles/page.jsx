@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 
-// ArticleCard component with Summarize button
 function ArticleCard({ article }) {
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -9,7 +8,6 @@ function ArticleCard({ article }) {
   async function handleSummarize() {
     setLoading(true);
     setSummary(null);
-    // Uses your API route to get a summary
     const res = await fetch("/api/summarize", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
