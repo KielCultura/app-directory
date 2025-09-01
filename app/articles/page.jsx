@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import articles from '@/data/articles.json';
+import articles from '../../articles.json'; // Adjusted path
 
 export default function ArticlesPage() {
   const [query, setQuery] = useState('');
