@@ -1,5 +1,3 @@
-// app/api/summarize/route.js
-
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
@@ -30,5 +28,25 @@ Be concise, informative, and relevant to Baguio City.
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "llama3-8b-8192", // You can try "mixtral-8x7b-32768" if needed
-       
+        model: "llama3-8b-8192",
+        messages: [
+          { role: "system", content: "You summarize articles based on metadata." },
+          { role: "user", content: prompt }
+        ],
+        temperature: 0.7
+      })
+    });
+
+    const data = await response.json();
+    const summary = data.choices?.[0]?.message?.content?.trim();
+
+    if (!summary) {
+      return NextResponse.json({ summary: "No summary returned by Groq." }, { status: 200 });
+    }
+
+    return NextResponse.json({ summary });
+  } catch (error) {
+    console.error("Groq summarization error:", error);
+    return NextResponse.json({ error: "Failed to summarize article." }, { status: 500 });
+  }
+}
