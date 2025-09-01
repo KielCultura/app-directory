@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 // Simple extractive summarizer:
 // - Split into sentences
 // - Score sentences by word frequency (ignoring common stopwords)
 // - Return top N sentences in original order
-function summarize(text: string, maxSentences = 3) {
-  const clean = text
+function summarize(text, maxSentences = 3) {
+  const clean = String(text || '')
     .replace(/\s+/g, ' ')
     .replace(/\[[^\]]*\]/g, '') // strip refs like [1]
     .trim();
@@ -15,6 +15,7 @@ function summarize(text: string, maxSentences = 3) {
     .map(s => s.trim())
     .filter(s => s.length > 0);
 
+  if (sentences.length === 0) return '';
   if (sentences.length <= maxSentences) return clean;
 
   const stop = new Set([
@@ -29,7 +30,7 @@ function summarize(text: string, maxSentences = 3) {
     .split(/\s+/)
     .filter(w => w && !stop.has(w));
 
-  const freq = new Map<string, number>();
+  const freq = new Map();
   for (const w of words) freq.set(w, (freq.get(w) || 0) + 1);
 
   const sentenceScores = sentences.map((s, idx) => {
@@ -39,7 +40,6 @@ function summarize(text: string, maxSentences = 3) {
     return { idx, s, score };
   });
 
-  // Pick top sentences by score, then sort back by original order
   const top = sentenceScores
     .sort((a, b) => b.score - a.score)
     .slice(0, maxSentences)
@@ -49,15 +49,17 @@ function summarize(text: string, maxSentences = 3) {
   return top.join(' ');
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(req) {
   try {
     const { text, sentences = 3 } = await req.json();
     if (typeof text !== 'string' || !text.trim()) {
       return NextResponse.json({ error: 'Missing text' }, { status: 400 });
     }
-    const sum = summarize(text, Math.min(Math.max(Number(sentences) || 3, 1), 6));
-    return NextResponse.json({ summary: sum });
+    const n = Math.min(Math.max(Number(sentences) || 3, 1), 6);
+    const summary = summarize(text, n);
+    return NextResponse.json({ summary });
   } catch (e) {
+    console.error('Summarize error:', e);
     return NextResponse.json({ error: 'Failed to summarize' }, { status: 500 });
   }
 }
