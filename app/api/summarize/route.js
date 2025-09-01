@@ -29,10 +29,7 @@ async function fetchPdfText(pdfUrl) {
 
   if (!res.ok) throw new Error(`PDF fetch failed: ${res.status}`);
   const buffer = await res.arrayBuffer();
-
-  // Use Groq directly with raw PDF content
-  const base64 = Buffer.from(buffer).toString('base64');
-  return base64;
+  return Buffer.from(buffer).toString('base64');
 }
 
 async function summarizeWithGroq(base64Pdf) {
@@ -44,4 +41,48 @@ async function summarizeWithGroq(base64Pdf) {
     },
     body: JSON.stringify({
       model: 'mixtral-8x7b-32768',
-      messages
+      messages: [
+        {
+          role: 'system',
+          content: 'You are a helpful assistant that summarizes academic PDFs clearly and concisely.',
+        },
+        {
+          role: 'user',
+          content: `Here is a base64-encoded academic PDF. Please extract the main ideas and summarize it:\n\n${base64Pdf}`,
+        },
+      ],
+      temperature: 0.7,
+    }),
+  });
+
+  const data = await res.json();
+  return data.choices?.[0]?.message?.content || '';
+}
+
+export async function POST(req) {
+  try {
+    const body = await req.json();
+    const { index, url: directUrl } = body || {};
+
+    let pdfUrl = directUrl;
+
+    if (!pdfUrl) {
+      const articles = await getArticles(req);
+      pdfUrl = findArticleUrl(articles, index);
+      if (!pdfUrl) {
+        return NextResponse.json(
+          { error: 'Valid PDF URL not found. Provide index or url.' },
+          { status: 400 }
+        );
+      }
+    }
+
+    const base64Pdf = await fetchPdfText(pdfUrl);
+    const summary = await summarizeWithGroq(base64Pdf);
+
+    return NextResponse.json({ source: pdfUrl, summary });
+  } catch (e) {
+    console.error('Summarize error:', e);
+    return NextResponse.json({ error: 'Failed to summarize' }, { status: 500 });
+  }
+}
