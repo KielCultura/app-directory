@@ -1,65 +1,47 @@
 import { NextResponse } from 'next/server';
 
-// Simple extractive summarizer:
-// - Split into sentences
-// - Score sentences by word frequency (ignoring common stopwords)
-// - Return top N sentences in original order
-function summarize(text, maxSentences = 3) {
-  const clean = String(text || '')
-    .replace(/\s+/g, ' ')
-    .replace(/\[[^\]]*\]/g, '') // strip refs like [1]
-    .trim();
+function getOrigin(req) {
+  return req.nextUrl?.origin ||
+    `${req.headers.get('x-forwarded-proto') || 'https'}://${req.headers.get('x-forwarded-host') || req.headers.get('host')}`;
+}
 
-  const sentences = clean
-    .split(/(?<=[.!?])\s+/)
-    .map(s => s.trim())
-    .filter(s => s.length > 0);
+async function getArticles(req) {
+  const origin = getOrigin(req);
+  const res = await fetch(`${origin}/articles.json`, { cache: 'no-store' });
+  if (!res.ok) throw new Error(`Failed to load articles.json: ${res.status}`);
+  return res.json();
+}
 
-  if (sentences.length === 0) return '';
-  if (sentences.length <= maxSentences) return clean;
+function findArticleUrl(articles, index) {
+  const entry = articles[index];
+  if (!entry || !entry.url || !/^https?:\/\/.+\.pdf$/i.test(entry.url)) return null;
+  return entry.url;
+}
 
-  const stop = new Set([
-    'the','is','are','a','an','and','or','of','to','in','for','on','with','by','as','that',
-    'it','its','this','these','those','be','from','at','was','were','has','have','had',
-    'but','not','their','they','you','we','he','she','his','her','them','our','your',
-  ]);
-
-  const words = clean
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, ' ')
-    .split(/\s+/)
-    .filter(w => w && !stop.has(w));
-
-  const freq = new Map();
-  for (const w of words) freq.set(w, (freq.get(w) || 0) + 1);
-
-  const sentenceScores = sentences.map((s, idx) => {
-    const ws = s.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/);
-    let score = 0;
-    for (const w of ws) if (w && !stop.has(w)) score += freq.get(w) || 0;
-    return { idx, s, score };
+async function fetchPdfText(pdfUrl) {
+  const res = await fetch(pdfUrl, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (compatible; ArticleSummary/1.0)',
+      'Accept': 'application/pdf',
+    },
+    cache: 'no-store',
   });
 
-  const top = sentenceScores
-    .sort((a, b) => b.score - a.score)
-    .slice(0, maxSentences)
-    .sort((a, b) => a.idx - b.idx)
-    .map(x => x.s);
+  if (!res.ok) throw new Error(`PDF fetch failed: ${res.status}`);
+  const buffer = await res.arrayBuffer();
 
-  return top.join(' ');
+  // Use Groq directly with raw PDF content
+  const base64 = Buffer.from(buffer).toString('base64');
+  return base64;
 }
 
-export async function POST(req) {
-  try {
-    const { text, sentences = 3 } = await req.json();
-    if (typeof text !== 'string' || !text.trim()) {
-      return NextResponse.json({ error: 'Missing text' }, { status: 400 });
-    }
-    const n = Math.min(Math.max(Number(sentences) || 3, 1), 6);
-    const summary = summarize(text, n);
-    return NextResponse.json({ summary });
-  } catch (e) {
-    console.error('Summarize error:', e);
-    return NextResponse.json({ error: 'Failed to summarize' }, { status: 500 });
-  }
-}
+async function summarizeWithGroq(base64Pdf) {
+  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: 'mixtral-8x7b-32768',
+      messages
