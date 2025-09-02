@@ -1,23 +1,5 @@
 import { NextResponse } from 'next/server';
 
-function getOrigin(req) {
-  return req.nextUrl?.origin ||
-    `${req.headers.get('x-forwarded-proto') || 'https'}://${req.headers.get('x-forwarded-host') || req.headers.get('host')}`;
-}
-
-async function getArticles(req) {
-  const origin = getOrigin(req);
-  const res = await fetch(`${origin}/articles.json`, { cache: 'no-store' });
-  if (!res.ok) throw new Error(`Failed to load articles.json: ${res.status}`);
-  return res.json();
-}
-
-function findArticleUrl(articles, index) {
-  const entry = articles[index];
-  if (!entry || !entry.url || !/^https?:\/\/.+\.pdf$/i.test(entry.url)) return null;
-  return entry.url;
-}
-
 async function fetchPdfText(pdfUrl) {
   const res = await fetch(pdfUrl, {
     headers: {
@@ -67,19 +49,13 @@ async function summarizeWithGroq(base64Pdf) {
 export async function POST(req) {
   try {
     const body = await req.json();
-    const { index, url: directUrl } = body || {};
-
-    let pdfUrl = directUrl;
+    const { url: pdfUrl } = body || {};
 
     if (!pdfUrl) {
-      const articles = await getArticles(req);
-      pdfUrl = findArticleUrl(articles, index);
-      if (!pdfUrl) {
-        return NextResponse.json(
-          { error: 'Valid PDF URL not found. Provide index or url.' },
-          { status: 400 }
-        );
-      }
+      return NextResponse.json(
+        { error: 'PDF URL required' },
+        { status: 400 }
+      );
     }
 
     const base64Pdf = await fetchPdfText(pdfUrl);
