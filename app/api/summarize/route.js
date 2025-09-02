@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+// --- Helpers ---
 async function fetchPdfText(pdfUrl) {
   const res = await fetch(pdfUrl, {
     headers: {
@@ -17,7 +18,7 @@ async function fetchPdfText(pdfUrl) {
   return Buffer.from(buffer).toString("base64");
 }
 
-async function summarizeWithGroq(base64Pdf) {
+async function summarizeWithGroq(content) {
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) {
     throw new Error("Missing GROQ_API_KEY in environment variables");
@@ -35,11 +36,11 @@ async function summarizeWithGroq(base64Pdf) {
         {
           role: "system",
           content:
-            "You are a helpful assistant that summarizes academic PDFs clearly and concisely.",
+            "You are a helpful assistant that summarizes academic articles and PDFs clearly and concisely.",
         },
         {
           role: "user",
-          content: `Here is a base64-encoded academic PDF. Please extract the main ideas and summarize it:\n\n${base64Pdf}`,
+          content: `Summarize this content:\n\n${content}`,
         },
       ],
       temperature: 0.7,
@@ -60,27 +61,34 @@ async function summarizeWithGroq(base64Pdf) {
   return data.choices[0].message.content;
 }
 
+// --- API Route ---
 export async function POST(req) {
   try {
     const body = await req.json();
     console.log("📥 Request body:", body);
 
-    const { url: pdfUrl } = body || {};
-    if (!pdfUrl) {
+    const { url, text } = body || {};
+    let contentToSummarize = "";
+
+    if (url && /^https?:\/\/.+\.pdf$/i.test(url)) {
+      console.log("🌐 Fetching PDF:", url);
+      const base64Pdf = await fetchPdfText(url);
+      contentToSummarize = `Here is a base64-encoded academic PDF:\n\n${base64Pdf}`;
+    } else if (text) {
+      console.log("📝 Using provided text content");
+      contentToSummarize = text;
+    } else {
       return NextResponse.json(
-        { error: "PDF URL required" },
+        { error: "Must provide either a PDF URL or text content" },
         { status: 400 }
       );
     }
 
-    console.log("🌐 Fetching PDF:", pdfUrl);
-    const base64Pdf = await fetchPdfText(pdfUrl);
-
-    console.log("📄 PDF fetched, sending to Groq…");
-    const summary = await summarizeWithGroq(base64Pdf);
+    console.log("📄 Sending to Groq…");
+    const summary = await summarizeWithGroq(contentToSummarize);
 
     console.log("✅ Summary generated");
-    return NextResponse.json({ source: pdfUrl, summary });
+    return NextResponse.json({ source: url || "text", summary });
   } catch (e) {
     console.error("❌ Summarize error:", e);
     return NextResponse.json(
