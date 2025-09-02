@@ -1,7 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-// Minimal text extraction that keeps your current JSON shape
 function toPlainText(input) {
   if (typeof input !== 'string') return '';
   const noHtml = input.replace(/<[^>]+>/g, ' ');
@@ -15,13 +14,11 @@ function extractText(val) {
     return val.map(extractText).filter(Boolean).join(' ');
   }
   if (typeof val === 'object') {
-    // Try common fields first
     const fields = ['content','body','text','article','description','excerpt','html','markdown','rendered','value'];
     for (const f of fields) if (f in val) {
       const t = extractText(val[f]);
       if (t) return t;
     }
-    // Fallback: concatenate values
     return Object.values(val).map(extractText).filter(Boolean).join(' ');
   }
   return '';
@@ -69,7 +66,6 @@ export default function Page() {
   const [error, setError] = useState('');
   const [summary, setSummary] = useState('');
   const [selectedArticle, setSelectedArticle] = useState(null);
-  const [sentences, setSentences] = useState(3); // tweak summary length
 
   useEffect(() => {
     let cancelled = false;
@@ -104,12 +100,12 @@ export default function Page() {
   const handleSummarize = async (article) => {
     setSelectedArticle(article);
     setSummary('Summarizing...');
-    const text = typeof article?.content === 'string' ? article.content : '';
+
     try {
       const res = await fetch('/api/summarize', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text, sentences }),
+        body: JSON.stringify({ url: article.url }), // ✅ send URL
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
@@ -124,55 +120,6 @@ export default function Page() {
     <div className="p-4">
       <h1 className="text-xl font-bold mb-4">Articles</h1>
 
-      <div className="mb-3 flex items-center gap-2">
-        <label className="text-sm text-gray-700">Sentences:</label>
-        <input
-          type="number"
-          min={1}
-          max={6}
-          value={sentences}
-          onChange={e => setSentences(Number(e.target.value))}
-          className="w-20 border rounded px-2 py-1"
-        />
-      </div>
-
       {loading && <p>Loading articles...</p>}
       {!loading && error && <p className="text-red-600">{error}</p>}
-      {!loading && !error && articles.length === 0 && <p className="text-gray-600">No articles found.</p>}
-
-      <ul className="space-y-4">
-        {articles.map((article, idx) => {
-          const preview = article.content
-            ? article.content.slice(0, 140) + '…'
-            : 'No preview available.';
-          return (
-            <li key={idx} className="border p-4 rounded">
-              <h2 className="text-lg font-semibold">{article.title || 'Untitled'}</h2>
-              <p className="text-sm text-gray-600">{preview}</p>
-              <div className="mt-2 flex items-center gap-2">
-                <button
-                  onClick={() => handleSummarize(article)}
-                  className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
-                >
-                  Summarize
-                </button>
-                {article.url && (
-                  <a className="text-blue-700 underline" href={article.url} target="_blank" rel="noreferrer">
-                    Open
-                  </a>
-                )}
-              </div>
-            </li>
-          );
-        })}
-      </ul>
-
-      {summary && selectedArticle && (
-        <div className="mt-6 p-4 bg-gray-100 rounded">
-          <h3 className="font-bold mb-2">Summary of: {selectedArticle.title || 'Untitled'}</h3>
-          <p>{summary}</p>
-        </div>
-      )}
-    </div>
-  );
-}
+      {!loading && !error &&
