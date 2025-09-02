@@ -45,25 +45,27 @@ async function summarizeWithGroq(base64Pdf) {
 
   return data.choices[0].message.content;
 }
-
 export async function POST(req) {
   try {
     const body = await req.json();
-    const { url: pdfUrl } = body || {};
+    console.log("📥 Incoming request body:", body);
 
+    const { url: pdfUrl } = body || {};
     if (!pdfUrl) {
-      return NextResponse.json(
-        { error: 'PDF URL required' },
-        { status: 400 }
-      );
+      console.error("❌ No PDF URL provided");
+      return NextResponse.json({ error: 'PDF URL required' }, { status: 400 });
     }
 
+    console.log("🌐 Fetching PDF from:", pdfUrl);
     const base64Pdf = await fetchPdfText(pdfUrl);
+    console.log("📄 PDF fetched, size (base64 length):", base64Pdf.length);
+
     const summary = await summarizeWithGroq(base64Pdf);
+    console.log("✅ Summary generated");
 
     return NextResponse.json({ source: pdfUrl, summary });
   } catch (e) {
-    console.error('Summarize error:', e);
-    return NextResponse.json({ error: 'Failed to generate summary' }, { status: 500 });
+    console.error("❌ Summarize error:", e);
+    return NextResponse.json({ error: e.message || 'Failed to generate summary' }, { status: 500 });
   }
 }
