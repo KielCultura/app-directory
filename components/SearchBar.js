@@ -7,7 +7,6 @@ export default function SearchBar({ articles, onResults }) {
     const query = e.target.value.toLowerCase();
     setSearch(e.target.value);
 
-    // Filter by title, summary/content, or tags (case-insensitive)
     const filtered = articles.filter(article => {
       const inTitle = article.title.toLowerCase().includes(query);
       const inSummary = (article.summary || "").toLowerCase().includes(query);
@@ -24,6 +23,14 @@ export default function SearchBar({ articles, onResults }) {
       value={search}
       placeholder="Search articles..."
       onChange={handleChange}
+      style={{
+        width: "100%",
+        padding: "10px",
+        marginBottom: "20px",
+        borderRadius: 6,
+        border: "1px solid #e2e4ed",
+        fontSize: "1em"
+      }}
     />
   );
 }
