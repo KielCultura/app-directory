@@ -34,8 +34,11 @@ export async function POST(req) {
     });
 
     const groqData = await groqRes.json();
-    const summary = groqData.choices?.[0]?.message?.content || "No summary available.";
-    return NextResponse.json({ summary });
+    // Return Groq's raw response for debugging
+    return NextResponse.json({
+      summary: groqData.choices?.[0]?.message?.content || "No summary available.",
+      debug: groqData
+    });
   } catch (e) {
     return NextResponse.json({ error: e.message || "Failed to generate summary" }, { status: 500 });
   }
