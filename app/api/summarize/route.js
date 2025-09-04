@@ -24,7 +24,7 @@ export async function POST(req) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "llama3-8b-8192", // <-- UPDATED MODEL NAME
+        model: "llama-3.3-70b-versatile", // <-- UPDATED MODEL NAME
         messages: [
           { role: "system", content: "You summarize academic articles and PDFs clearly and concisely." },
           { role: "user", content: prompt }
