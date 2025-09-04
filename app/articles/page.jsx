@@ -1,8 +1,10 @@
 'use client';
 import { useEffect, useState } from 'react';
+import SearchBar from '../components/SearchBar';
 
 export default function Page() {
   const [articles, setArticles] = useState([]);
+  const [filteredArticles, setFilteredArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [summary, setSummary] = useState('');
@@ -15,6 +17,7 @@ export default function Page() {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         setArticles(data);
+        setFilteredArticles(data);
       } catch (e) {
         setError('Failed to load articles.');
         setArticles([]);
@@ -45,10 +48,11 @@ export default function Page() {
   return (
     <div style={{ maxWidth: 600, margin: "30px auto", fontFamily: "sans-serif" }}>
       <h1>Articles</h1>
+      <SearchBar articles={articles} onResults={setFilteredArticles} />
       {loading && <p>Loading articles...</p>}
       {!loading && error && <p style={{ color: "red" }}>{error}</p>}
       <ul style={{ padding: 0 }}>
-        {articles.map((article, idx) => (
+        {filteredArticles.map((article, idx) => (
           <li key={idx} style={{
             border: "1px solid #e2e4ed", borderRadius: 8, padding: 14, marginBottom: 18, listStyle: "none"
           }}>
