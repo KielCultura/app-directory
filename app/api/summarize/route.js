@@ -7,20 +7,27 @@ export async function POST(req) {
     const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) throw new Error("Missing GROQ_API_KEY");
 
-    let contentToSummarize = text || "";
+    let prompt = "";
+
     if (url && /^https?:\/\/.+\.pdf$/i.test(url)) {
-      // (Note: For real PDF support, extract text from PDF here)
-      contentToSummarize = `PDF at ${url}`;
+      prompt = `Please summarize the academic PDF at this URL: ${url}`;
+    } else if (text) {
+      prompt = `Please summarize the following article:\n\n${text}`;
+    } else {
+      return NextResponse.json({ error: "Must provide a PDF URL or text" }, { status: 400 });
     }
 
     const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
-      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         model: "mixtral-8x7b-32768",
         messages: [
-          { role: "system", content: "You summarize academic articles and PDFs." },
-          { role: "user", content: contentToSummarize }
+          { role: "system", content: "You summarize academic articles and PDFs clearly and concisely." },
+          { role: "user", content: prompt }
         ],
         temperature: 0.7,
       }),
