@@ -1,14 +1,62 @@
 [
-  {
-    "title": "Gastronomic Tourism's Influence on Baguio Tourists' Travel Choices and Cultural Experience",
-    "url": "https://journal-innovations.com/assets/uploads/doc/d5c6b-1401-1420.09107.pdf",
-    "tags": ["park", "nature", "landmark"],
-    "summary": "Burnham Park is Baguio's bustling green space, beloved by locals and tourists alike."
-  },
-  {
-    "title": "The Bright Side of Dark Tourism in Baguio City: Understanding its Impact to the Stakeholders",
-    "url": "https://core.ac.uk/download/620177903.pdf",
-    "tags": ["history", "culture"],
-    "summary": "Discover the origins and evolution of the Summer Capital of the Philippines."
-  }
+{
+  "title": "Baguio and Burnham: How This City Was Made to Last",
+  "url": "https://www.esquiremag.ph/long-reads/features/baguio-city-history-a1729-20200515-lfrm2",
+  "tags": ["urban planning", "American colonial", "Burnham Park"],
+  "summary": "This article explores Baguio’s transformation under American rule, focusing on Daniel Burnham’s city planning and the cultural tensions between colonial design and indigenous heritage."
+},
+{
+  "title": "Baguio – Wikipedia",
+  "url": "https://en.wikipedia.org/wiki/Baguio",
+  "tags": ["history", "geography", "administration"],
+  "summary": "A comprehensive overview of Baguio’s origins, development, and current status, including its role as the Summer Capital and its historical significance during World War II."
+},
+{
+  "title": "About Baguio – City Government of Baguio",
+  "url": "https://new.baguio.gov.ph/about-baguio/",
+  "tags": ["local governance", "heritage", "Camp John Hay"],
+  "summary": "Official city page detailing Baguio’s historical milestones, including its founding, cultural evolution, and the surrender of Japanese forces at Camp John Hay."
+},
+{
+  "title": "The Culture and Traditions of Baguio",
+  "url": "https://richestph.com/the-culture-and-traditions-of-baguio/",
+  "tags": ["Igorot", "rituals", "crafts"],
+  "summary": "A deep dive into Baguio’s indigenous roots, spiritual practices, and traditional crafts like weaving and woodcarving, highlighting the city’s cultural resilience."
+},
+{
+  "title": "Baguio: UNESCO Creative City for Crafts and Folk Arts",
+  "url": "https://silverbackpacker.com/baguio-unesco-creative-city/",
+  "tags": ["UNESCO", "folk arts", "creative economy"],
+  "summary": "Chronicles Baguio’s recognition as a UNESCO Creative City, emphasizing its vibrant arts scene and the preservation of indigenous craftsmanship."
+},
+{
+  "title": "Local Traditions and Culture in Baguio City",
+  "url": "https://www.smartertravel.com/local-traditions-culture-baguio-city-culture/",
+  "tags": ["food", "festivals", "religion"],
+  "summary": "Highlights cultural staples like strawberry taho, balut, and the Panagbenga Festival, along with religious landmarks and local customs."
+},
+{
+  "title": "Baguio Culture, History, and Heritage",
+  "url": "https://www.brittany.com.ph/blogs/baguio-culture-history-heritage/",
+  "tags": ["heritage", "museums", "traditions"],
+  "summary": "A cultural tour through Baguio’s museums, indigenous villages, and historical sites, showcasing the city’s blend of tradition and modernity."
+},
+{
+  "title": "35 Baguio Tourist Spots & Things to Do",
+  "url": "https://www.thepoortraveler.net/baguio-tourist-spots-things-to-do/",
+  "tags": ["landmarks", "nature", "food"],
+  "summary": "A curated list of top attractions including Mirador Hill, Tam-Awan Village, and culinary destinations like Ili-Likha and Oh My Gulay."
+},
+{
+  "title": "42 Baguio Tourist Spots + Itinerary",
+  "url": "https://thepinaysolobackpacker.com/baguio-tourist-spot/",
+  "tags": ["itinerary", "museums", "parks"],
+  "summary": "Offers a detailed travel guide with entrance fees, directions, and cultural highlights like Museo Kordilyera and the haunted Diplomat Hotel."
+},
+{
+  "title": "Top 19 Baguio City Tourist Spots",
+  "url": "https://guidetothephilippines.ph/articles/what-to-experience/baguio-city-tourist-spots",
+  "tags": ["parks", "art", "viewpoints"],
+  "summary": "Features iconic destinations such as Burnham Park, Mines View Park, BenCab Museum, and the StoBoSa hillside mural."
+}
 ]
