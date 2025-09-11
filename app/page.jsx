@@ -1,6 +1,6 @@
 export default function Home() {
   return (
-    import './App.css';
+    <div style={{ backgroundImage: 'url(/background.jpg)' }}></div>
     <main style={{ maxWidth: 600, margin: "40px auto", fontFamily: "sans-serif" }}>
       <h1>Welcome to BagRovr</h1>
       <p>
