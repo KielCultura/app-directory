@@ -1,10 +1,11 @@
 export default function Home() {
   return (
-    <div style={{ backgroundImage: 'url(/background.jpg)' }}></div>
-    <main style={{ maxWidth: 600, margin: "40px auto", fontFamily: "sans-serif" }}>
-      <h1>Welcome to BagRovr</h1>
-      <p>
-        Discover curated articles about Baguio City.<br />
+    <>
+      <div style={{ backgroundImage: 'url(/test.jpg)' }}></div>
+      <main style={{ maxWidth: 600, margin: "40px auto", fontFamily: "sans-serif" }}>
+        <h1>Welcome to BagRovr</h1>
+        <p>
+          Discover curated articles about Baguio City.<br />
         <a href="/articles" style={{ 
           display: "inline-block", 
           color: "#183ba8", 
