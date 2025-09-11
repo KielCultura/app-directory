@@ -2,7 +2,7 @@ export default function Home() {
   return (
     <div
       style={{
-        backgroundImage: 'url(/test.jpg)',
+        backgroundImage: 'url(/BAGUIO.jpg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         minHeight: '100vh',
