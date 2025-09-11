@@ -1,33 +1,33 @@
 export default function Home() {
   return (
-    <>
-     <div
-  style={{
-    backgroundImage: 'url(/test.jpg)',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    height: '100vh', // full viewport height
-    width: '100%',
-  }}
-></div>
-
-      <main style={{ maxWidth: 600, margin: "40px auto", fontFamily: "sans-serif" }}>
+    <div
+      style={{
+        backgroundImage: 'url(/test.jpg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: '100vh',
+        padding: '40px',
+        fontFamily: 'sans-serif',
+        color: '#000', // or white depending on your image
+      }}
+    >
+      <main style={{ maxWidth: 600, margin: '0 auto' }}>
         <h1>Welcome to BagRovr</h1>
         <p>
           Discover curated articles about Baguio City.<br />
           <a
             href="/articles"
             style={{
-              display: "inline-block",
-              color: "#183ba8",
-              fontWeight: "bold",
-              fontSize: "1.2em",
-              marginTop: "20px",
-              marginBottom: "12px",
-              padding: "10px 20px",
-              borderRadius: "6px",
-              background: "#e3eafe",
-              textDecoration: "none",
+              display: 'inline-block',
+              color: '#183ba8',
+              fontWeight: 'bold',
+              fontSize: '1.2em',
+              marginTop: '20px',
+              marginBottom: '12px',
+              padding: '10px 20px',
+              borderRadius: '6px',
+              background: '#e3eafe',
+              textDecoration: 'none',
             }}
           >
             Browse Articles →
@@ -39,21 +39,21 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
             style={{
-              display: "inline-block",
-              color: "#fff",
-              background: "#183ba8",
-              fontWeight: "bold",
-              fontSize: "1.2em",
-              marginTop: "10px",
-              padding: "10px 20px",
-              borderRadius: "6px",
-              textDecoration: "none",
+              display: 'inline-block',
+              color: '#fff',
+              background: '#183ba8',
+              fontWeight: 'bold',
+              fontSize: '1.2em',
+              marginTop: '10px',
+              padding: '10px 20px',
+              borderRadius: '6px',
+              textDecoration: 'none',
             }}
           >
             AI Powered Itinerary Maker →
           </a>
         </p>
       </main>
-    </>
+    </div>
   );
 }
