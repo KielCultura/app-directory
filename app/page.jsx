@@ -30,7 +30,7 @@ export default function Home() {
           href="/articles"
           style={{
             display: 'inline-block',
-            color: '#183ba8',
+            color: '#f7c94a',
             fontWeight: 'bold',
             fontSize: '1.1em',
             marginBottom: '16px',
@@ -50,7 +50,7 @@ export default function Home() {
           style={{
             display: 'inline-block',
             color: '#fff',
-            background: '#183ba8',
+            background: '#edc75f',
             fontWeight: 'bold',
             fontSize: '1.1em',
             marginTop: '12px',
