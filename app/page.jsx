@@ -1,7 +1,16 @@
 export default function Home() {
   return (
     <>
-      <div style={{ backgroundImage: 'url(/test.jpg)' }}></div>
+     <div
+  style={{
+    backgroundImage: 'url(/test.jpg)',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    height: '100vh', // full viewport height
+    width: '100%',
+  }}
+></div>
+
       <main style={{ maxWidth: 600, margin: "40px auto", fontFamily: "sans-serif" }}>
         <h1>Welcome to BagRovr</h1>
         <p>
