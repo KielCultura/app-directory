@@ -11,7 +11,7 @@ export default function Page() {
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch('/articles.json', { cache: 'no-store' });
+        const res = await fetch('articles.json', { cache: 'no-store' });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         setArticles(data);
