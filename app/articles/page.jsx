@@ -11,7 +11,8 @@ export default function Page() {
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch('articles.json', { cache: 'no-store' });
+        const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+        const res = await fetch(`${basePath}/articles.json`, { cache: 'no-store' });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         setArticles(data);
@@ -19,6 +20,8 @@ export default function Page() {
       } catch (e) {
         setError('Failed to load articles.');
         setArticles([]);
+        // Add this to help debugging
+        console.error('Articles fetch error:', e);
       } finally {
         setLoading(false);
       }
@@ -41,6 +44,7 @@ export default function Page() {
   );
 }
 
+// ... (rest of your ArticleCard code remains unchanged)
 // Individual article card component, manages its own summary state
 function ArticleCard({ article }) {
   const [summary, setSummary] = useState('');
