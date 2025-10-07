@@ -17,22 +17,26 @@ export default function SearchBar({ articles, onResults }) {
   }
 
   return (
-    
-    <input
-      type="text"
-      value={search}
-      placeholder="Search articles..."
-      onChange={handleChange}
-      style={{
-      import url('https://fonts.googleapis.com/css?family=Comfortaa:400,700&display=swap');
-        width: "100%",
-        padding: "10px",
-        marginBottom: "20px",
-        borderRadius: 6,
-        border: "1px solid #e2e4ed",
-        fontSize: "1em"
-        font-family: 'Comfortaa', Arial, sans-serif;
-      }}
-    />
+    <>
+      {/* Import Comfortaa font using a style tag */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css?family=Comfortaa:400,700&display=swap');
+      `}</style>
+      <input
+        type="text"
+        value={search}
+        placeholder="Search articles..."
+        onChange={handleChange}
+        style={{
+          width: "100%",
+          padding: "10px",
+          marginBottom: "20px",
+          borderRadius: 6,
+          border: "1px solid #e2e4ed",
+          fontSize: "1em",
+          fontFamily: "'Comfortaa', Arial, sans-serif"
+        }}
+      />
+    </>
   );
 }
