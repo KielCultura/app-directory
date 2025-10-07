@@ -24,7 +24,7 @@ export default function SearchBar({ articles, onResults }) {
       placeholder="Search articles..."
       onChange={handleChange}
       style={{
-        @import url('https://fonts.googleapis.com/css?family=Comfortaa:400,700&display=swap');
+      import url('https://fonts.googleapis.com/css?family=Comfortaa:400,700&display=swap');
         width: "100%",
         padding: "10px",
         marginBottom: "20px",
