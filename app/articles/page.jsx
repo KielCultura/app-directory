@@ -30,12 +30,106 @@ export default function Page() {
   }, []);
 
   return (
-    <div style={{ maxWidth: 600, margin: "30px auto", fontFamily: "sans-serif" }}>
+    <div className="articles-container">
+      {/* Global styles for the page */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css?family=Comfortaa:400,700&display=swap');
+        body {
+          font-family: 'Comfortaa', Arial, sans-serif;
+          background: #f5f8fa;
+        }
+        .articles-container {
+          max-width: 600px;
+          margin: 30px auto;
+          font-family: 'Comfortaa', Arial, sans-serif;
+        }
+        h1, h2 {
+          font-family: Georgia, serif;
+          color: #ffce10;
+        }
+        h1 {
+          font-size: 2.2em;
+          font-weight: 700;
+          text-align: center;
+          margin-bottom: 22px;
+        }
+        h2 {
+          font-size: 1.18em;
+          font-weight: bold;
+          margin-bottom: 6px;
+        }
+        .article-list {
+          padding: 0;
+        }
+        .article-card {
+          border: 1px solid #e2e4ed;
+          border-radius: 10px;
+          padding: 18px 20px 16px 20px;
+          margin-bottom: 22px;
+          background: #fafdff;
+          list-style: none;
+          box-shadow: 0 2px 8px #4169e119;
+          font-family: 'Comfortaa', Arial, sans-serif;
+        }
+        .article-summary {
+          margin-bottom: 10px;
+        }
+        .article-tags {
+          margin-bottom: 10px;
+        }
+        .article-tag {
+          display: inline-block;
+          background: #e3eafe;
+          border-radius: 5px;
+          padding: 2px 8px;
+          margin-right: 7px;
+          font-size: 0.97em;
+        }
+        .yellow-btn {
+          margin-top: 8px;
+          padding: 8px 16px;
+          background: #ffce10;
+          color: #333;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          font-family: 'Comfortaa', Arial, sans-serif;
+          font-size: 1em;
+          transition: background 0.2s, color 0.2s;
+        }
+        .yellow-btn:disabled {
+          background: #ccc;
+          color: #888;
+          cursor: not-allowed;
+        }
+        .yellow-btn:hover:not(:disabled) {
+          background: #e0b808;
+        }
+        .article-link {
+          margin-left: 10px;
+          color: #4169e1;
+          font-family: 'Comfortaa', Arial, sans-serif;
+          text-decoration: none;
+          font-size: 1em;
+        }
+        .ai-summary-box {
+          margin-top: 12px;
+          background: #fafdff;
+          padding: 12px;
+          border-radius: 8px;
+        }
+        .error-message {
+          color: red;
+        }
+        .loading-message {
+          color: #888;
+        }
+      `}</style>
       <h1>Articles</h1>
       <SearchBar articles={articles} onResults={setFilteredArticles} />
-      {loading && <p>Loading articles...</p>}
-      {!loading && error && <p style={{ color: "red" }}>{error}</p>}
-      <ul style={{ padding: 0 }}>
+      {loading && <p className="loading-message">Loading articles...</p>}
+      {!loading && error && <p className="error-message">{error}</p>}
+      <ul className="article-list">
         {filteredArticles.map((article, idx) => (
           <ArticleCard key={idx} article={article} />
         ))}
@@ -44,8 +138,6 @@ export default function Page() {
   );
 }
 
-// ... (rest of your ArticleCard code remains unchanged)
-// Individual article card component, manages its own summary state
 function ArticleCard({ article }) {
   const [summary, setSummary] = useState('');
   const [summarizing, setSummarizing] = useState(false);
@@ -69,33 +161,28 @@ function ArticleCard({ article }) {
   };
 
   return (
-    <li style={{
-      border: "1px solid #e2e4ed", borderRadius: 8, padding: 14, marginBottom: 18, listStyle: "none"
-    }}>
-      <h2 style={{ fontSize: "1.18em", fontWeight: "bold" }}>{article.title}</h2>
-      <p>{article.summary}</p>
-      <div>
+    <li className="article-card">
+      <h2>{article.title}</h2>
+      <p className="article-summary">{article.summary}</p>
+      <div className="article-tags">
         {article.tags && article.tags.map(tag => (
-          <span key={tag} style={{
-            display: "inline-block", background: "#e3eafe", borderRadius: 5,
-            padding: "2px 8px", marginRight: 7, fontSize: "0.97em"
-          }}>{tag}</span>
+          <span key={tag} className="article-tag">{tag}</span>
         ))}
       </div>
       <button
         onClick={handleSummarize}
         disabled={summarizing}
-        style={{ marginTop: 8, padding: "8px 16px", background: "#183ba8", color: "#fff", border: "none", borderRadius: 4 }}
+        className="yellow-btn"
       >
         Summarize
       </button>
       {article.url && (
-        <a href={article.url} target="_blank" rel="noreferrer" style={{ marginLeft: 10, color: "#183ba8" }}>
+        <a href={article.url} target="_blank" rel="noreferrer" className="article-link">
           Open
         </a>
       )}
       {summary && (
-        <div style={{ marginTop: 12, background: "#fafdff", padding: 12, borderRadius: 8 }}>
+        <div className="ai-summary-box">
           <strong>AI Summary:</strong>
           <p style={{ margin: 0 }}>{summary}</p>
         </div>
