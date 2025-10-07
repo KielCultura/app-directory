@@ -124,6 +124,9 @@ export default function Page() {
         .loading-message {
           color: #888;
         }
+      a, .article-link, .card-link, .itinerary-link {
+  color: #93c47d !important;
+}
       `}</style>
       <h1>Articles</h1>
       <SearchBar articles={articles} onResults={setFilteredArticles} />
