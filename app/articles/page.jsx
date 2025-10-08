@@ -1,7 +1,9 @@
 'use client';
 import { useEffect, useState } from 'react';
 import SearchBar from '../components/SearchBar';
-import Button from 'react-native';
+export default function HelpButton() {
+  return (
+
 
 export default function Page() {
   const [articles, setArticles] = useState([]);
@@ -131,12 +133,13 @@ export default function Page() {
 
       `}</style>
       <h1>Articles</h1>
+       <button
+  onClick={() => window.location.href = "https://external-site.com"}
+  className="yellow-btn"
+>
+  Help
+</button>
       <SearchBar articles={articles} onResults={setFilteredArticles} />
-      <a href="sites.google.com/view/bagrovrph/article-database?read_current=1" target ="blank">
-        <Button
-            className="yellow-btn"
-          >Help</Button>
-        </a>
       {loading && <p className="loading-message">Loading articles...</p>}
       {!loading && error && <p className="error-message">{error}</p>}
       <ul className="article-list">
