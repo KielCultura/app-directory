@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import SearchBar from '../components/SearchBar';
+import Button from '@mui/material/Button'; 
 
 export default function Page() {
   const [articles, setArticles] = useState([]);
