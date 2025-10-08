@@ -128,16 +128,23 @@ export default function Page() {
       a, .article-link, .card-link, .itinerary-link {
   color: #93c47d !important;
 }
+.button-container {
+  display: flex;
+  justify-content: center; 
+  margin: 20px 0;         
+}
 
       `}</style>
       <h1>Articles</h1>
+      <div className="button-container">
            <a
-        href="https://external-site.com"
-        target="_blank"
+        href="https://sites.google.com/view/bagrovrph/article-database?authuser=0"
         rel="noopener noreferrer"
       >
         <button className="yellow-btn">Help</button>
       </a> 
+        </div>
+      
       <SearchBar articles={articles} onResults={setFilteredArticles} />
       {loading && <p className="loading-message">Loading articles...</p>}
       {!loading && error && <p className="error-message">{error}</p>}
