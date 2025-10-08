@@ -1,8 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
 import SearchBar from '../components/SearchBar';
-export default function HelpButton() {
-  return (
 
 
 export default function Page() {
@@ -133,12 +131,13 @@ export default function Page() {
 
       `}</style>
       <h1>Articles</h1>
-       <button
-  onClick={() => window.location.href = "https://external-site.com"}
-  className="yellow-btn"
->
-  Help
-</button>
+           <a
+        href="https://external-site.com"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <button className="yellow-btn">Help</button>
+      </a> 
       <SearchBar articles={articles} onResults={setFilteredArticles} />
       {loading && <p className="loading-message">Loading articles...</p>}
       {!loading && error && <p className="error-message">{error}</p>}
