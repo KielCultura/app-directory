@@ -138,7 +138,7 @@ export default function Page() {
       <h1>Articles</h1>
       <div className="button-container">
            <a
-        href="https://sites.google.com/view/bagrovrph/article-database?authuser=0"
+        href="https://sites.google.com/view/bagrovrph/tutotial-2"
         rel="noopener noreferrer"
       >
         <button className="yellow-btn">Help</button>
