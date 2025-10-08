@@ -140,6 +140,8 @@ export default function Page() {
            <a
         href="https://sites.google.com/view/bagrovrph/tutotial-2"
         rel="noopener noreferrer"
+        target="_blank"
+
       >
         <button className="yellow-btn">Help</button>
       </a> 
