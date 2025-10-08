@@ -127,9 +127,15 @@ export default function Page() {
       a, .article-link, .card-link, .itinerary-link {
   color: #93c47d !important;
 }
+
       `}</style>
       <h1>Articles</h1>
       <SearchBar articles={articles} onResults={setFilteredArticles} />
+      <a href="sites.google.com/view/bagrovrph/article-database?read_current=1" target ="blank">
+        <Button
+            className="yellow-btn"
+          >Help</Button>
+        </a>
       {loading && <p className="loading-message">Loading articles...</p>}
       {!loading && error && <p className="error-message">{error}</p>}
       <ul className="article-list">
@@ -178,7 +184,7 @@ function ArticleCard({ article }) {
         className="yellow-btn"
       >
         Summarize
-      </button>
+      </button >
       {article.url && (
         <a href={article.url} target="_blank" rel="noreferrer" className="article-link">
           Open
