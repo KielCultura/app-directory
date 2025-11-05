@@ -1,62 +1,176 @@
 [
-{
-  "title": "Baguio and Burnham: How This City Was Made to Last",
-  "url": "https://www.esquiremag.ph/long-reads/features/baguio-city-history-a1729-20200515-lfrm2",
-  "tags": ["urban planning", "American colonial", "Burnham Park"],
-  "summary": "This article explores Baguio’s transformation under American rule, focusing on Daniel Burnham’s city planning and the cultural tensions between colonial design and indigenous heritage."
-},
-{
-  "title": "Baguio – Wikipedia",
-  "url": "https://en.wikipedia.org/wiki/Baguio",
-  "tags": ["history", "geography", "administration"],
-  "summary": "A comprehensive overview of Baguio’s origins, development, and current status, including its role as the Summer Capital and its historical significance during World War II."
-},
-{
-  "title": "About Baguio – City Government of Baguio",
-  "url": "https://new.baguio.gov.ph/about-baguio/",
-  "tags": ["local governance", "heritage", "Camp John Hay"],
-  "summary": "Official city page detailing Baguio’s historical milestones, including its founding, cultural evolution, and the surrender of Japanese forces at Camp John Hay."
-},
-{
-  "title": "The Culture and Traditions of Baguio",
-  "url": "https://richestph.com/the-culture-and-traditions-of-baguio/",
-  "tags": ["Igorot", "rituals", "crafts"],
-  "summary": "A deep dive into Baguio’s indigenous roots, spiritual practices, and traditional crafts like weaving and woodcarving, highlighting the city’s cultural resilience."
-},
-{
-  "title": "Baguio: UNESCO Creative City for Crafts and Folk Arts",
-  "url": "https://silverbackpacker.com/baguio-unesco-creative-city/",
-  "tags": ["UNESCO", "folk arts", "creative economy"],
-  "summary": "Chronicles Baguio’s recognition as a UNESCO Creative City, emphasizing its vibrant arts scene and the preservation of indigenous craftsmanship."
-},
-{
-  "title": "Local Traditions and Culture in Baguio City",
-  "url": "https://www.smartertravel.com/local-traditions-culture-baguio-city-culture/",
-  "tags": ["food", "festivals", "religion"],
-  "summary": "Highlights cultural staples like strawberry taho, balut, and the Panagbenga Festival, along with religious landmarks and local customs."
-},
-{
-  "title": "Baguio Culture, History, and Heritage",
-  "url": "https://www.brittany.com.ph/blogs/baguio-culture-history-heritage/",
-  "tags": ["heritage", "museums", "traditions"],
-  "summary": "A cultural tour through Baguio’s museums, indigenous villages, and historical sites, showcasing the city’s blend of tradition and modernity."
-},
-{
-  "title": "35 Baguio Tourist Spots & Things to Do",
-  "url": "https://www.thepoortraveler.net/baguio-tourist-spots-things-to-do/",
-  "tags": ["landmarks", "nature", "food"],
-  "summary": "A curated list of top attractions including Mirador Hill, Tam-Awan Village, and culinary destinations like Ili-Likha and Oh My Gulay."
-},
-{
-  "title": "42 Baguio Tourist Spots + Itinerary",
-  "url": "https://thepinaysolobackpacker.com/baguio-tourist-spot/",
-  "tags": ["itinerary", "museums", "parks"],
-  "summary": "Offers a detailed travel guide with entrance fees, directions, and cultural highlights like Museo Kordilyera and the haunted Diplomat Hotel."
-},
-{
-  "title": "Top 19 Baguio City Tourist Spots",
-  "url": "https://guidetothephilippines.ph/articles/what-to-experience/baguio-city-tourist-spots",
-  "tags": ["parks", "art", "viewpoints"],
-  "summary": "Features iconic destinations such as Burnham Park, Mines View Park, BenCab Museum, and the StoBoSa hillside mural."
-}
-] 
+  {
+    "title": "Baguio and Burnham: How This City Was Made to Last",
+    "url": "https://www.esquiremag.ph/long-reads/features/baguio-city-history-a1729-20200515-lfrm2",
+    "tags": ["urban planning", "American colonial", "Burnham Park"],
+    "summary": "This article explores Baguio’s transformation under American rule, focusing on Daniel Burnham’s city planning and the cultural tensions between colonial design and indigenous heritage."
+  },
+  {
+    "title": "Baguio – Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Baguio",
+    "tags": ["history", "geography", "administration"],
+    "summary": "A comprehensive overview of Baguio’s origins, development, and current status, including its role as the Summer Capital and its historical significance during World War II."
+  },
+  {
+    "title": "About Baguio – City Government of Baguio",
+    "url": "https://new.baguio.gov.ph/about-baguio/",
+    "tags": ["local governance", "heritage", "Camp John Hay"],
+    "summary": "Official city page detailing Baguio’s historical milestones, including its founding, cultural evolution, and the surrender of Japanese forces at Camp John Hay."
+  },
+  {
+    "title": "The Culture and Traditions of Baguio",
+    "url": "https://richestph.com/the-culture-and-traditions-of-baguio/",
+    "tags": ["Igorot", "rituals", "crafts"],
+    "summary": "A deep dive into Baguio’s indigenous roots, spiritual practices, and traditional crafts like weaving and woodcarving, highlighting the city’s cultural resilience."
+  },
+  {
+    "title": "Baguio: UNESCO Creative City for Crafts and Folk Arts",
+    "url": "https://silverbackpacker.com/baguio-unesco-creative-city/",
+    "tags": ["UNESCO", "folk arts", "creative economy"],
+    "summary": "Chronicles Baguio’s recognition as a UNESCO Creative City, emphasizing its vibrant arts scene and the preservation of indigenous craftsmanship."
+  },
+  {
+    "title": "Local Traditions and Culture in Baguio City",
+    "url": "https://www.smartertravel.com/local-traditions-culture-baguio-city-culture/",
+    "tags": ["food", "festivals", "religion"],
+    "summary": "Highlights cultural staples like strawberry taho, balut, and the Panagbenga Festival, along with religious landmarks and local customs."
+  },
+  {
+    "title": "Baguio Culture, History, and Heritage",
+    "url": "https://www.brittany.com.ph/blogs/baguio-culture-history-heritage/",
+    "tags": ["heritage", "museums", "traditions"],
+    "summary": "A cultural tour through Baguio’s museums, indigenous villages, and historical sites, showcasing the city’s blend of tradition and modernity."
+  },
+  {
+    "title": "35 Baguio Tourist Spots & Things to Do",
+    "url": "https://www.thepoortraveler.net/baguio-tourist-spots-things-to-do/",
+    "tags": ["landmarks", "nature", "food"],
+    "summary": "A curated list of top attractions including Mirador Hill, Tam-Awan Village, and culinary destinations like Ili-Likha and Oh My Gulay."
+  },
+  {
+    "title": "42 Baguio Tourist Spots + Itinerary",
+    "url": "https://thepinaysolobackpacker.com/baguio-tourist-spot/",
+    "tags": ["itinerary", "museums", "parks"],
+    "summary": "Offers a detailed travel guide with entrance fees, directions, and cultural highlights like Museo Kordilyera and the haunted Diplomat Hotel."
+  },
+  {
+    "title": "Top 19 Baguio City Tourist Spots",
+    "url": "https://guidetothephilippines.ph/articles/what-to-experience/baguio-city-tourist-spots",
+    "tags": ["parks", "art", "viewpoints"],
+    "summary": "Features iconic destinations such as Burnham Park, Mines View Park, BenCab Museum, and the StoBoSa hillside mural."
+  },
+  {
+    "title": "Baguio Crafts & Folk Arts",
+    "url": "http://creativebaguio.com/baguio-crafts-folk-arts/",
+    "tags": ["arts", "crafts", "heritage"],
+    "summary": "Showcases Baguio’s folk arts, including weaving, woodcarving, and crafts that reflect indigenous culture."
+  },
+  {
+    "title": "Major Festivals in Baguio City",
+    "url": "https://elretirobaguio.com/major-festivals-in-baguio-city/",
+    "tags": ["festivals", "Panagbenga", "culture"],
+    "summary": "Highlights Baguio’s most popular festivals, led by the Panagbenga Flower Festival, which attracts thousands of tourists annually."
+  },
+  {
+    "title": "Local traditions and culture in Baguio City",
+    "url": "https://www.smartertravel.com/local-traditions-culture-baguio-city-culture/",
+    "tags": ["traditions", "food", "festivals"],
+    "summary": "Covers Baguio’s cultural traditions such as strawberry taho, balut, and religious landmarks, blending modern and indigenous practices."
+  },
+  {
+    "title": "Baguio Culture, History, And Heritage",
+    "url": "https://www.brittany.com.ph/blogs/baguio-culture-history-heritage/",
+    "tags": ["heritage", "history", "museums"],
+    "summary": "Explores Baguio’s cultural heritage, indigenous influences, and important historical sites that shape the city’s identity."
+  },
+  {
+    "title": "Baguio City's UNESCO Designation",
+    "url": "http://creativebaguio.com/about-baguio-city/",
+    "tags": ["UNESCO", "creative city", "arts"],
+    "summary": "Details Baguio’s designation as a UNESCO Creative City for crafts and folk arts, celebrating its vibrant artistic community."
+  },
+  {
+    "title": "History - City Government of Baguio",
+    "url": "https://new.baguio.gov.ph/about-baguio/",
+    "tags": ["local governance", "history", "Camp John Hay"],
+    "summary": "Official city history page outlining Baguio’s founding, cultural evolution, and World War II milestones."
+  },
+  {
+    "title": "Baguio - Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Baguio",
+    "tags": ["history", "geography", "administration"],
+    "summary": "Comprehensive overview of Baguio, including its origins, role as the Summer Capital, and historical significance during wartime."
+  },
+  {
+    "title": "Baguio Between Two Wars: The Creation and Destruction of a Summer Capital",
+    "url": "https://ejournals.ph/article.php?id=5168",
+    "tags": ["history", "World War II", "urban planning"],
+    "summary": "Analyzes Baguio’s development as a summer capital during the American colonial period and its destruction during the war."
+  },
+  {
+    "title": "The Urbanization of Baguio: The Gold City of the Orient, 1929–1941",
+    "url": "https://thecordillerareview.upb.edu.ph/wp-content/uploads/2022/12/TCR-12-12_8-LUGA.pdf",
+    "tags": ["urbanization", "history", "American colonial"],
+    "summary": "A historical paper examining Baguio’s urban growth before World War II, highlighting its economic and cultural transformation."
+  },
+  {
+    "title": "History of Baguio City, Philippines",
+    "url": "http://www.gobaguio.com/history-of-baguio-city.html",
+    "tags": ["history", "heritage", "colonial"],
+    "summary": "Provides a detailed account of Baguio’s history, from its Igorot roots to its role as a colonial summer capital."
+  },
+  {
+    "title": "Baguio City in the Philippines Travel Guide: Everything You Need to Know",
+    "url": "https://guidetothephilippines.ph/articles/ultimate-guides/baguio-city-travel-guide",
+    "tags": ["travel guide", "tourism", "culture"],
+    "summary": "Comprehensive travel guide covering Baguio’s attractions, culture, and travel tips for first-time visitors."
+  },
+  {
+    "title": "Top 19 Baguio City Tourist Spots",
+    "url": "https://guidetothephilippines.ph/articles/what-to-experience/baguio-city-tourist-spots",
+    "tags": ["tourist spots", "parks", "museums"],
+    "summary": "Lists the top destinations in Baguio, including Burnham Park, Mines View, BenCab Museum, and more."
+  },
+  {
+    "title": "42 BAGUIO TOURIST SPOTS + ITINERARY (2025)",
+    "url": "https://thepinaysolobackpacker.com/baguio-tourist-spot/amp/",
+    "tags": ["itinerary", "travel", "museums"],
+    "summary": "A detailed 2025 travel itinerary featuring Baguio’s attractions, with updated entrance fees and cultural highlights."
+  },
+  {
+    "title": "The 30 most historic buildings and sites in Baguio",
+    "url": "https://wanderlog.com/list/geoCategory/837206/most-historic-buildings-and-sites-in-baguio",
+    "tags": ["history", "architecture", "landmarks"],
+    "summary": "Highlights Baguio’s most historic structures, from colonial buildings to war-era landmarks."
+  },
+  {
+    "title": "Baguio Attractions & Historical Landmarks",
+    "url": "http://www.gobaguio.com/attractions.html",
+    "tags": ["landmarks", "heritage", "tourism"],
+    "summary": "Curated list of attractions including Burnham Park, Session Road, and other cultural landmarks in Baguio."
+  },
+  {
+    "title": "Tourist Spots - City Government of Baguio",
+    "url": "https://new.baguio.gov.ph/tourist-spots",
+    "tags": ["official", "tourist spots", "parks"],
+    "summary": "Official government page featuring top tourist destinations in Baguio such as parks, museums, and heritage sites."
+  },
+  {
+    "title": "Baguio 2025: Top Places to Visit & Must-See Attractions",
+    "url": "https://www.klook.com/en-PH/destination/c365498-baguio/",
+    "tags": ["travel", "tourist spots", "attractions"],
+    "summary": "A 2025 guide to Baguio’s most popular destinations, including nature spots, art hubs, and family-friendly attractions."
+  },
+  {
+    "title": "Top 32 Tourist Spots in BAGUIO (Tagalog)",
+    "url": "https://www.philippinebeaches.org/baguio-tourist-spots-things-to-do/",
+    "tags": ["tourism", "guide", "Tagalog"],
+    "summary": "A Tagalog-language guide listing 32 of Baguio’s best tourist spots and activities for local and international visitors."
+  },
+  {
+    "title": "Baguio Historical Walking Tour",
+    "url": "https://www.toureast.net/experiences/baguio-historical-walking-tour",
+    "tags": ["walking tour", "history", "heritage"],
+    "summary": "A guided walking tour experience focusing on Baguio’s historical sites, landmarks, and cultural heritage."
+  }
+]
