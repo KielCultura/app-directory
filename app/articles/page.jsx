@@ -146,10 +146,7 @@ export default function Page() {
     justify-content: center; 
     margin: 20px 0;         
   }
-  body {
-  font-family: 'Comfortaa', Arial, sans-serif;
-  background: #383f46;
-}
+  .articles-container { background: #383f46; }
 `}</style>
       <h1>Articles</h1>
       <div className="button-container">
