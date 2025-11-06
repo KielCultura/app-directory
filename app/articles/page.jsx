@@ -33,109 +33,120 @@ export default function Page() {
   return (
     <div className="articles-container">
       {/* Global styles for the page */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css?family=Comfortaa:400,700&display=swap');
-        @import url('https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap');
-        body {
-          font-family: 'Comfortaa', Arial, sans-serif;
-          background: #383f46;
-        }
-        .articles-container {
-          max-width: 600px;
-          margin: 30px auto;
-          font-family: 'Comfortaa', Arial, sans-serif;
-        }
-        h1, h2 {
-          font-family: Georgia, serif;
-          color: #ffce10;
-        }
-        h1 {
-          font-size: 2.2em;
-          font-weight: 700;
-          text-align: center;
-          margin-bottom: 22px;
-        }
-        h2 {
-          font-size: 1.18em;
-          font-weight: bold;
-          margin-bottom: 6px;
-        }
-        .article-list {
-          padding: 0;
-        }
-        .article-card {
-          border: 1px solid #e2e4ed;
-          border-radius: 10px;
-          padding: 18px 20px 16px 20px;
-          margin-bottom: 22px;
-          background: #fafdff;
-          list-style: none;
-          box-shadow: 0 2px 8px #4169e119;
-          font-family: 'Comfortaa', Arial, sans-serif;
-        }
-        .article-summary {
-          margin-bottom: 10px;
-        }
-        .article-tags {
-          margin-bottom: 10px;
-        }
-        .article-tag {
-          display: inline-block;
-          background: #e3eafe;
-          border-radius: 5px;
-          padding: 2px 8px;
-          margin-right: 7px;
-          font-size: 0.97em;
-        }
-        .yellow-btn {
-          margin-top: 8px;
-          padding: 8px 16px;
-          background: #ffce10;
-          color: #333;
-          border: none;
-          border-radius: 6px;
-          cursor: pointer;
-          font-family: 'Comfortaa', Arial, sans-serif;
-          font-size: 1em;
-          transition: background 0.2s, color 0.2s;
-        }
-        .yellow-btn:disabled {
-          background: #ccc;
-          color: #888;
-          cursor: not-allowed;
-        }
-        .yellow-btn:hover:not(:disabled) {
-          background: #e0b808;
-        }
-        .article-link {
-          margin-left: 10px;
-          color: #4169e1;
-          font-family: 'Comfortaa', Arial, sans-serif;
-          text-decoration: none;
-          font-size: 1em;
-        }
-        .ai-summary-box {
-          margin-top: 12px;
-          background: #fafdff;
-          padding: 12px;
-          border-radius: 8px;
-        }
-        .error-message {
-          color: red;
-        }
-        .loading-message {
-          color: #888;
-        }
-      a, .article-link, .card-link, .itinerary-link {
-  color: #93c47d !important;
-}
-.button-container {
-  display: flex;
-  justify-content: center; 
-  margin: 20px 0;         
-}
-
-      `}</style>
+     <style>{`
+  @import url('https://fonts.googleapis.com/css?family=Comfortaa:400,700&display=swap');
+  @import url('https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap');
+  body {
+    font-family: 'Comfortaa', Arial, sans-serif;
+    background: #383f46;
+  }
+  .articles-container {
+    max-width: 600px;
+    margin: 30px auto;
+    font-family: 'Comfortaa', Arial, sans-serif;
+    color: #ffffff; /* Default text color */
+  }
+  h1, h2 {
+    font-family: Georgia, serif;
+    color: #c9daf8;
+  }
+  h1 {
+    font-size: 2.2em;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 22px;
+  }
+  h2 {
+    font-size: 1.18em;
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+  .article-list {
+    padding: 0;
+  }
+  .article-card {
+    border: 1px solid #e2e4ed;
+    border-radius: 10px;
+    padding: 18px 20px 16px 20px;
+    margin-bottom: 22px;
+    background: #424954; /* slightly lighter for cards */
+    list-style: none;
+    box-shadow: 0 2px 8px #4169e119;
+    font-family: 'Comfortaa', Arial, sans-serif;
+    color: #ffffff; /* ensure card text is white */
+  }
+  .article-summary,
+  .article-tag,
+  .article-link,
+  .ai-summary-box,
+  .loading-message,
+  .error-message,
+  p,
+  div {
+    color: #ffffff; /* make sure other texts are white */
+  }
+  .article-tags {
+    margin-bottom: 10px;
+  }
+  .article-tag {
+    display: inline-block;
+    background: #e3eafe;
+    border-radius: 5px;
+    padding: 2px 8px;
+    margin-right: 7px;
+    font-size: 0.97em;
+    color: #383f46; /* tags: dark text for contrast */
+  }
+  .yellow-btn {
+    margin-top: 8px;
+    padding: 8px 16px;
+    background: #000000;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Comfortaa', Arial, sans-serif;
+    font-size: 1em;
+    transition: background 0.2s, color 0.2s;
+  }
+  .yellow-btn:disabled {
+    background: #333333;
+    color: #888888;
+    cursor: not-allowed;
+  }
+  .yellow-btn:hover:not(:disabled) {
+    background: #222222;
+    color: #ffffff;
+  }
+  .article-link {
+    margin-left: 10px;
+    color: #c9daf8 !important;
+    font-family: 'Comfortaa', Arial, sans-serif;
+    text-decoration: none;
+    font-size: 1em;
+  }
+  .ai-summary-box {
+    margin-top: 12px;
+    background: #424954;
+    padding: 12px;
+    border-radius: 8px;
+    color: #ffffff;
+  }
+  .error-message {
+    color: #ffb3b3;
+  }
+  .loading-message {
+    color: #ffffff;
+  }
+  a, .article-link, .card-link, .itinerary-link {
+    color: #c9daf8 !important;
+  }
+  .button-container {
+    display: flex;
+    justify-content: center; 
+    margin: 20px 0;         
+  }
+`}</style>
       <h1>Articles</h1>
       <div className="button-container">
            <a
