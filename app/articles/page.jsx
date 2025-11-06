@@ -38,7 +38,7 @@ export default function Page() {
         @import url('https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap');
         body {
           font-family: 'Comfortaa', Arial, sans-serif;
-          background: #f5f8fa;
+          background: #383f46;
         }
         .articles-container {
           max-width: 600px;
