@@ -35,6 +35,7 @@ export default function Page() {
       {/* Global styles for the page */}
       <style>{`
         @import url('https://fonts.googleapis.com/css?family=Comfortaa:400,700&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap');
         body {
           font-family: 'Comfortaa', Arial, sans-serif;
           background: #f5f8fa;
