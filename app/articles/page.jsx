@@ -160,6 +160,13 @@ export default function Page() {
   padding: 0;
 }
 
+body {
+  background-image: url('app-directory/public/BAGUIO.jpg');
+  background-size: cover;        
+  background-position: center;    
+  background-repeat: no-repeat;   
+}
+
 `}</style>
       <h1>Articles</h1>
       <div className="button-container">
