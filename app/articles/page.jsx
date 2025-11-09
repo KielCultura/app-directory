@@ -31,6 +31,11 @@ export default function Page() {
   }, []);
 
   return (
+
+    <style>
+    
+    
+    </style>
     <div className="articles-container">
       {/* Global styles for the page */}
      <style>{`
@@ -147,6 +152,14 @@ export default function Page() {
     margin: 20px 0;         
   }
   .articles-container { background: #383f46; }
+html, body {
+  background: #383f46;
+  height: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
 `}</style>
       <h1>Articles</h1>
       <div className="button-container">
