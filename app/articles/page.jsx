@@ -161,7 +161,7 @@ export default function Page() {
 }
 
 body {
-  background-image: url('app-directory/app/public/BAGUIO.jpg');
+  backgroundImage: 'url(/BAGUIO.jpg)',
   background-size: cover;        
   background-position: center;    
   background-repeat: no-repeat;   
