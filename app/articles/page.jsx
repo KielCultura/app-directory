@@ -32,11 +32,7 @@ export default function Page() {
 
   return (
 
-    <style>
-      .body{
-        background-color: #383f46;
-      }
-    </style>
+   
     <div className="articles-container">
       {/* Global styles for the page */}
      <style>{`
