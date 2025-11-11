@@ -52,7 +52,7 @@ export default function Page() {
     color: #ffffff; /* Default text color */
   }
   h1, h2 {
-    font-family: Georgia, serif;
+    font-family: Bebas Neue, serif;
     color: #c9daf8;
   }
   h1 {
